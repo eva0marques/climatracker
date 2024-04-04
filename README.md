@@ -2,7 +2,7 @@
 
 This repository provide R functions to quickly plot the temperature anomaly of any valid weather station of the [Global Historical Climatology Network daily (GHCNd)](https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily) for a given year.
 
-Reference for GHCNd data: 
+Reference for GHCNd data:  
 Menne, M.J., I. Durre, B. Korzeniewski, S. McNeill, K. Thomas, X. Yin, S. Anthony, R. Ray, 
 R.S. Vose, B.E.Gleason, and T.G. Houston, 2012: Global Historical Climatology Network - 
 Daily (GHCN-Daily), Version 3. [indicate subset used following decimal, 

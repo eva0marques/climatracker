@@ -1,0 +1,81 @@
+---
+title: "Climate Tracker: Temperature Anomaly Calculation"
+format: html
+editor: visual
+author: "Eva Marques"
+---
+
+#### Load functions
+
+```{r}
+source("load_ghcnd_station.R")
+source("plot_anomaly.R")
+source("plot_temperature.R")
+```
+
+#### Find nearest station of a given location
+
+```{r}
+#mystation <- find_nearest_valid_ghcnd(lat = 35.8840, lon = -78.8778)
+# houston (Texas)
+#mystation <- find_nearest_valid_ghcnd(lat = 29.7297, lon = -95.36)
+# Toulouse (France)
+#mystation <- find_nearest_valid_ghcnd(lat = 43.6135, lon = 1.4431)
+# oklahoma city (Oklahoma)
+#mystation <- find_nearest_valid_ghcnd(lat = 35.4599, lon = -97.51)
+# salt lake city (Utah)
+mystation <- find_nearest_valid_ghcnd(lat = 40.789, lon = -111.925, avoid = "USC00427606")
+# phoenix (Arizona)
+#mystation <- find_nearest_valid_ghcnd(lat = 33.5100, lon = -112.0759)
+# NYC 
+#mystation <- find_nearest_valid_ghcnd(lat = 40.7332, lon = -73.99)
+# chicago
+#mystation <- find_nearest_valid_ghcnd(lat = 41.7971, lon = -87.709, avoid = "USC00111577")
+# buffalo (NY)
+#mystation <- find_nearest_valid_ghcnd(lat = 42.911, lon = -78.846, avoid = "USC00111577")
+# camp fire (paradise, california)
+#mystation <- find_nearest_valid_ghcnd(lat = 39.754,
+#                                      lon = -121.612,
+#                                      avoid = c("USC00046685", "USC00042402"))
+# los angeles
+#mystation <- find_nearest_valid_ghcnd(lat = 34.105, lon = -118.294)
+# san francisco
+#mystation <- find_nearest_valid_ghcnd(lat = 37.760, lon = -122.397)
+# las vegas
+#mystation <- find_nearest_valid_ghcnd(lat = 36.179, lon = -115.206)
+# miami
+mystation <- find_nearest_valid_ghcnd(lat = 25.779,
+                                      lon = -80.220,
+                                      avoid = c("USC00083909", "USW00092811"))
+site_id <- mystation$nearest_tmax$site_id
+```
+
+#### Select a year
+
+```{r}
+year <- 2022
+```
+
+#### Plot anomaly
+
+```{r}
+p <- plot_anomaly(site_id, year)
+p
+ggsave(filename = paste0("graphs/anomaly_", site_id, "_", year, ".png"),
+       plot = p,
+       width = 10,
+       height = 5,
+       dpi = 300)
+```
+
+#### Plot temperature
+
+```{r}
+p <- plot_temperature(site_id, year)
+p
+ggsave(filename = paste0("graphs/temperature_", site_id, "_", year, ".png"),
+       plot = p,
+       width = 10,
+       height = 5,
+       dpi = 300)
+```

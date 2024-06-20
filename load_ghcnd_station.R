@@ -48,23 +48,32 @@ list_valid_stations <- function(var) {
 
 
 #' Find nearest valid GHCND station to a given location
+#' to be improved: check NA frequency 
+#' (for eg., station in Salt Lake City has NAs in the whole 2021)
 #' @param lat Latitude
 #' @param lon Longitude
+#' @param avoid A list of stations site_id to avoid
 #' @return A list with the nearest station for TMAX, TMIN and TAVG
 #' @author Eva Marques
-find_nearest_valid_ghcnd <- function(lat, lon) {
+find_nearest_valid_ghcnd <- function(lat, lon, avoid = NULL) {
   valid_tmax <- list_valid_stations("TMAX") |>
     sf::st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE)
   valid_tmin <- list_valid_stations("TMIN") |>
     sf::st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE)
   valid_tavg <- list_valid_stations("TAVG") |>
     sf::st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE)
+  if (!is.null(avoid)) {
+    valid_tmax <- valid_tmax[!valid_tmax$site_id %in% avoid, ]
+    valid_tmax <- valid_tmax[!valid_tmax$site_id %in% avoid, ]
+    valid_tmax <- valid_tmax[!valid_tmax$site_id %in% avoid, ]
+  }
   my_point <- sf::st_point(c(lon, lat)) |>
     sf::st_sfc(crs = 4326) |>
     sf::st_sf()
   nearest_tmax <- sf::st_nearest_feature(my_point, valid_tmax)
   nearest_tmin <- sf::st_nearest_feature(my_point, valid_tmin)
   nearest_tavg <- sf::st_nearest_feature(my_point, valid_tavg)
+  
   r <- list(nearest_tmax = valid_tmax[nearest_tmax, ],
             nearest_tmin = valid_tmin[nearest_tmin, ],
             nearest_tavg = valid_tavg[nearest_tavg, ])
